@@ -20,6 +20,7 @@ import SelectGovProposal from '@steps/SelectGovProposal';
 import ShortTextInput from '@steps/ShortTextInput';
 import LongTextInput from '@steps/LongTextInput';
 import ProposalDeposit from '@steps/ProposalDeposit';
+import KadoBuyCrypto from '@steps/KadoBuyCrypto';
 
 type ActionPageProps = {
   actionData: ACTION;
@@ -94,6 +95,15 @@ const ActionExecution: NextPage<ActionPageProps> = ({ actionData }) => {
 
   const getStepComponent = (step: STEP) => {
     switch (step?.id) {
+      case STEPS.kado_buy_crypto:
+        return (
+          <KadoBuyCrypto
+            onSuccess={handleOnNext<STEPS.kado_buy_crypto>}
+            onBack={handleBack}
+            data={step.data as StepDataType<STEPS.kado_buy_crypto>}
+            header={action?.name}
+          />
+        );
       case STEPS.get_receiver_address:
         return (
           <ReceiverAddress

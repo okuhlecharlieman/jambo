@@ -8,6 +8,7 @@ import { USER } from 'types/user';
 import { initializeWC, WCBroadCastMessage } from './walletConnect';
 import { initializeKeplr, keplrBroadCastMessage } from './keplr';
 import { initializeOpera, operaBroadCastMessage } from './opera';
+import { initializeImpactsX, impactsXBroadCastMessage } from './impactsX';
 import { getFeeDenom, TOKEN_ASSET } from './currency';
 import { DELEGATION, UNBONDING_DELEGATION } from 'types/validators';
 import { sumArray } from './misc';
@@ -90,6 +91,8 @@ export const initializeWallet = async (
       return await initializeKeplr(chain);
     case WALLET_TYPE.opera:
       return await initializeOpera(chain);
+    case WALLET_TYPE.impactsX:
+      return await initializeImpactsX(chain as ChainInfo);
     case WALLET_TYPE.walletConnect:
       return await initializeWC(chain);
     case WALLET_TYPE.signX:
@@ -112,6 +115,8 @@ export const broadCastMessages = async (
   switch (wallet.walletType) {
     case WALLET_TYPE.keplr:
       return await keplrBroadCastMessage(msgs, memo, fee, feeDenom, chain);
+    case WALLET_TYPE.impactsX:
+      return await impactsXBroadCastMessage(msgs, memo, fee, feeDenom, chain as ChainInfo);
     case WALLET_TYPE.opera:
       return await operaBroadCastMessage(msgs, memo, fee, feeDenom, chain);
     case WALLET_TYPE.walletConnect:

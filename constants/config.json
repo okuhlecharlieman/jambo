@@ -11,6 +11,18 @@
   "termsAndConditions": "https://my.jambo.earth/legal/termsOfUse",
   "actions": [
     {
+      "id": "kado",
+      "steps": [
+        {
+          "id": "kado_buy_crypto",
+          "name": "Buy Crypto with Kado"
+        }
+      ],
+      "name": "Buy",
+      "description": "Buy Crypto with Kado",
+      "image": "eKXPPhewkJDLbE1bq1iboa.png"
+    },
+    {
       "id": "eKXPPhewkJDLbE1bq1iboz",
       "steps": [
         {

@@ -2,6 +2,7 @@ import { VALIDATOR } from './validators';
 import { CURRENCY_TOKEN } from './wallet';
 
 export enum STEPS {
+  kado_buy_crypto = 'kado_buy_crypto',
   check_user_balance = 'check_user_balance',
   get_receiver_address = 'get_receiver_address',
   get_validator_delegate = 'get_validator_delegate',
@@ -37,6 +38,10 @@ export type STEP = {
 };
 
 export const steps: { [key in STEPS]: STEP } = {
+  [STEPS.kado_buy_crypto]: {
+    id: STEPS.kado_buy_crypto,
+    name: 'Buy Crypto with Kado',
+  },
   [STEPS.check_user_balance]: {
     id: STEPS.check_user_balance,
     name: 'Check user balance',
@@ -159,6 +164,7 @@ export type AllStepConfigTypes = Select_token_and_amount_config;
 
 export type StepConfigType<T> = T extends STEPS.select_token_and_amount ? Select_token_and_amount_config : never;
 
+interface Kado_buy_crypto {}
 interface Check_user_balance {
   balance: number;
 }
@@ -217,7 +223,9 @@ export type AllStepDataTypes =
   | Define_proposal_deposit
   | Review_and_sign;
 
-export type StepDataType<T> = T extends STEPS.check_user_balance
+export type StepDataType<T> = T extends STEPS.kado_buy_crypto
+  ? Kado_buy_crypto
+  : T extends STEPS.check_user_balance
   ? Check_user_balance
   : T extends STEPS.get_receiver_address
   ? Get_receiver_addresses
