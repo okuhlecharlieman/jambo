@@ -1,47 +1,46 @@
-import { getOpera as getJamboOpera } from '@ixo/jambo-wallet-sdk';
+import { getImpactsX as getJamboImpactsX } from '@ixo/jambo-wallet-sdk';
 import { ChainInfo } from '@keplr-wallet/types';
 
 import * as Toast from '@components/Toast/Toast';
 import { sendTransaction, initStargateClient } from './client';
 import { TRX_FEE_OPTION, TRX_MSG } from 'types/transactions';
 import { USER } from 'types/user';
-import { KEPLR_CHAIN_INFO_TYPE } from 'types/chain';
 
-export const getOpera = getJamboOpera;
+export const getImpactsX = getJamboImpactsX;
 
-export const initializeOpera = async (chainInfo: KEPLR_CHAIN_INFO_TYPE): Promise<USER | undefined> => {
-  const opera = getOpera();
-  if (!opera) return;
+export const initializeImpactsX = async (chainInfo: ChainInfo): Promise<USER | undefined> => {
+  const impactsX = getImpactsX();
+  if (!impactsX) return;
   try {
-    await opera.experimentalSuggestChain(chainInfo as ChainInfo);
-    await opera.enable(chainInfo.chainId);
-    const key = await opera.getKey(chainInfo.chainId);
+    // await impactsX.experimentalSuggestChain(chainInfo as ChainInfo);
+    await impactsX.enable(chainInfo.chainId, 'testnet');
+    const key = await impactsX.getKey(chainInfo.chainId);
     return key
       ? { name: key.name, pubKey: key.pubKey, address: key.bech32Address, algo: key.algo, ledgered: true }
       : undefined;
   } catch (error) {
-    console.error('Error initializing Opera:: ' + error);
+    console.error('Error initializing impactsX:: ' + error);
   }
 };
 
-export const connectOperaAccount = async (chainInfo: KEPLR_CHAIN_INFO_TYPE): Promise<any> => {
-  const opera = getOpera();
-  if (!opera) return [null, null];
-  const offlineSigner = await opera.getOfflineSigner(chainInfo.chainId);
+export const connectImpactsXAccount = async (chainInfo: ChainInfo): Promise<any> => {
+  const impactsX = getImpactsX();
+  if (!impactsX) return [null, null];
+  const offlineSigner = impactsX.getOfflineSigner(chainInfo.chainId);
   if (!offlineSigner) return [null, null];
   const accounts = await offlineSigner.getAccounts();
   return [accounts, offlineSigner];
 };
 
-export const operaBroadCastMessage = async (
+export const impactsXBroadCastMessage = async (
   msgs: TRX_MSG[],
   memo = '',
   fee: TRX_FEE_OPTION,
   feeDenom: string,
-  chainInfo: KEPLR_CHAIN_INFO_TYPE,
+  chainInfo: ChainInfo,
 ): Promise<string | null> => {
   try {
-    const [accounts, offlineSigner] = await connectOperaAccount(chainInfo);
+    const [accounts, offlineSigner] = await connectImpactsXAccount(chainInfo);
 
     if (!accounts) throw new Error('No accounts found to broadcast transaction');
     if (!offlineSigner) throw new Error('No offlineSigner found to broadcast transaction');
@@ -57,11 +56,11 @@ export const operaBroadCastMessage = async (
     };
     const result = await sendTransaction(client, address, payload);
 
-    if (!result) throw new Error('Transaction Failed');
+    if (!result) throw new Error('Transaction Failed - ' + JSON.stringify(result));
 
     return result.transactionHash;
   } catch (e) {
-    Toast.errorToast(`Transaction Failed`);
+    Toast.errorToast(`Transaction Failed ${(e as Error).message}`);
     return null;
   }
 };

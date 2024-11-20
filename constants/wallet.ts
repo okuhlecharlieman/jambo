@@ -16,6 +16,16 @@ export const WALLETS = {
     img: '/images/wallets/wallet-connect.png',
     type: WALLET_TYPE.walletConnect,
   },
+  [WALLET_TYPE.signX]: {
+    name: 'SignX',
+    img: '/images/wallets/signX.png',
+    type: WALLET_TYPE.signX,
+  },
+  [WALLET_TYPE.impactsX]: {
+    name: 'ImpactsX',
+    img: '/images/wallets/impacts-x.png',
+    type: WALLET_TYPE.impactsX,
+  },
 };
 
 export const WalletConnectProjectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID;
